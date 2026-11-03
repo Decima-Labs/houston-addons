@@ -1,0 +1,11 @@
+{
+  "name": "agents-screen",
+  "version": "1.0.0",
+  "description": "A \u2318K screen listing every agent Houston sees, with each one's details.",
+  "author": {
+    "name": "Decima Labs"
+  },
+  "keywords": [
+    "houston-addon"
+  ]
+}

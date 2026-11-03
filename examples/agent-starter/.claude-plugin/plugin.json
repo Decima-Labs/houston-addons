@@ -1,0 +1,11 @@
+{
+  "name": "agent-starter",
+  "version": "1.0.0",
+  "description": "Start a Claude Code or Codex agent on a task in a folder you name, with your yes.",
+  "author": {
+    "name": "Decima Labs"
+  },
+  "keywords": [
+    "houston-addon"
+  ]
+}

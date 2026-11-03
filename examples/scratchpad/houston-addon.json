@@ -1,0 +1,37 @@
+{
+  "houston-addon": 1,
+  "id": "io.decimalabs.example.scratchpad",
+  "name": "Scratchpad",
+  "version": "1.0.0",
+  "description": "A sidebar scratchpad with keyboard shortcuts: one opens it, one stamps the time into it.",
+  "author": {
+    "name": "Decima Labs",
+    "key": "5FEIYVuHYmANg9uYx5Xws/GvxTXniso+TL4VHCN9MDg="
+  },
+  "contributes": {
+    "sidebarSections": [
+      {
+        "id": "scratchpad",
+        "title": "Scratchpad",
+        "page": "pages/scratchpad.html",
+        "symbol": "note.text"
+      }
+    ],
+    "commands": [
+      {
+        "id": "open-scratchpad",
+        "title": "Open Scratchpad",
+        "keys": "cmd+option+shift+p",
+        "opens": "scratchpad"
+      },
+      {
+        "id": "stamp-time",
+        "title": "Stamp the Time in Scratchpad",
+        "keys": "cmd+option+shift+t"
+      }
+    ],
+    "events": [
+      "command.ran"
+    ]
+  }
+}

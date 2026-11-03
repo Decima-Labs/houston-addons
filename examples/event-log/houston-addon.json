@@ -1,0 +1,46 @@
+{
+  "houston-addon": 1,
+  "id": "io.decimalabs.example.event-log",
+  "name": "Event Log",
+  "version": "1.0.0",
+  "description": "A sidebar section that lists what happens in Houston as it happens.",
+  "author": {
+    "name": "Decima Labs",
+    "key": "5FEIYVuHYmANg9uYx5Xws/GvxTXniso+TL4VHCN9MDg="
+  },
+  "permissions": {
+    "agents": [
+      "all"
+    ],
+    "houston": [
+      "missions.read",
+      "schedules.read"
+    ]
+  },
+  "contributes": {
+    "sidebarSections": [
+      {
+        "id": "event-log",
+        "title": "Event Log",
+        "page": "pages/log.html",
+        "symbol": "list.bullet.rectangle"
+      }
+    ],
+    "screens": [
+      {
+        "id": "event-log-screen",
+        "title": "Event Log",
+        "page": "pages/log.html",
+        "symbol": "list.bullet.rectangle"
+      }
+    ],
+    "events": [
+      "agent.started",
+      "agent.stopped",
+      "agent.asks",
+      "agent.message",
+      "mission.moved",
+      "schedule.ran"
+    ]
+  }
+}

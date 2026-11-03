@@ -1,0 +1,11 @@
+{
+  "name": "board-tools",
+  "version": "1.0.0",
+  "description": "Move missions, pause schedules and write a memory from one screen, each with your yes.",
+  "author": {
+    "name": "Decima Labs"
+  },
+  "keywords": [
+    "houston-addon"
+  ]
+}

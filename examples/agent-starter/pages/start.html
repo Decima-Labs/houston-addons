@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agent Starter</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 13px -apple-system, system-ui, sans-serif; margin: 12px; color: #222; background: transparent; }
+  @media (prefers-color-scheme: dark) { body { color: #ddd; } }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  h2 { font-size: 13px; margin: 14px 0 6px; }
+  button, select, input, textarea { font: inherit; }
+  code, pre { font: 12px ui-monospace, monospace; }
+  pre { white-space: pre-wrap; word-break: break-word; }
+  ul { padding-left: 18px; margin: 4px 0; }
+  .muted { opacity: 0.65; }
+  .error { color: #d33; }
+  .row { display: flex; gap: 6px; align-items: center; margin: 4px 0; }
+</style>
+</head>
+<body>
+<h1>Start an agent</h1>
+<div class="row">
+  <label for="provider">Agent</label>
+  <select id="provider"><option value="claude">Claude Code</option><option value="codex">Codex</option></select>
+</div>
+<div class="row">
+  <label for="repository">Folder</label>
+  <input id="repository" placeholder="/Users/you/code/project" style="flex: 1">
+</div>
+<textarea id="task" rows="4" style="width: 100%; box-sizing: border-box;" placeholder="The task"></textarea>
+<div class="row"><button id="start">Start</button></div>
+<p id="status" class="muted"></p>
+<script>
+  // Every houston.call returns a promise. It rejects with Houston's own words when the gate
+  // refuses, the person says no, or the call fails; show them rather than swallowing them.
+  const $ = (id) => document.getElementById(id);
+  function say(text, isError) {
+    const el = $("status");
+    el.textContent = text;
+    el.className = isError ? "error" : "muted";
+  }
+  async function call(name, args) {
+    try {
+      return await houston.call(name, args);
+    } catch (e) {
+      say(String((e && e.message) || e), true);
+      throw e;
+    }
+  }
+
+$("start").onclick = async () => {
+    const provider = $("provider").value;
+    const repository = $("repository").value.trim();
+    const task = $("task").value.trim();
+    if (!repository.startsWith("/") || !task) return say("Give an absolute folder and a task.", true);
+    await call("storage.set", { key: "repository", value: repository });
+    say("Waiting for your yes…");
+    // Asks first: "Let Agent Starter start a Claude Code agent?", with "In ~/code/project: <task>".
+    await call("agent.start", { provider, repository, task });
+    say("Started. It's on Agents.");
+  };
+
+  (async () => {
+    $("repository").value = (await call("storage.get", { key: "repository" })) || "";
+  })();
+</script>
+</body>
+</html>

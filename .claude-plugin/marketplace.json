@@ -1,0 +1,135 @@
+{
+  "name": "houston-addons",
+  "owner": {
+    "name": "Decima Labs"
+  },
+  "metadata": {
+    "description": "Add-ons for Houston: Claude Code plugins with a signed houston-addon.json."
+  },
+  "plugins": [
+    {
+      "name": "hello",
+      "source": "./addons/hello",
+      "description": "A starting point for a Houston add-on: a sidebar section, a command and a skill.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Decima Labs"
+      },
+      "keywords": [
+        "houston-addon"
+      ]
+    },
+    {
+      "name": "theme-dusk",
+      "source": "./examples/theme-dusk",
+      "description": "Example: A dark theme with warm accents, as a Houston add-on.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Decima Labs"
+      },
+      "category": "example",
+      "keywords": [
+        "houston-addon",
+        "example"
+      ]
+    },
+    {
+      "name": "agents-screen",
+      "source": "./examples/agents-screen",
+      "description": "Example: A ⌘K screen listing every agent Houston sees, with each one's details.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Decima Labs"
+      },
+      "category": "example",
+      "keywords": [
+        "houston-addon",
+        "example"
+      ]
+    },
+    {
+      "name": "scratchpad",
+      "source": "./examples/scratchpad",
+      "description": "Example: A sidebar scratchpad with keyboard shortcuts: one opens it, one stamps the time into it.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Decima Labs"
+      },
+      "category": "example",
+      "keywords": [
+        "houston-addon",
+        "example"
+      ]
+    },
+    {
+      "name": "context-panels",
+      "source": "./examples/context-panels",
+      "description": "Example: Panels beside an agent, a mission, a chat and a terminal tab, showing where each opened.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Decima Labs"
+      },
+      "category": "example",
+      "keywords": [
+        "houston-addon",
+        "example"
+      ]
+    },
+    {
+      "name": "event-log",
+      "source": "./examples/event-log",
+      "description": "Example: A sidebar section that lists what happens in Houston as it happens.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Decima Labs"
+      },
+      "category": "example",
+      "keywords": [
+        "houston-addon",
+        "example"
+      ]
+    },
+    {
+      "name": "board-tools",
+      "source": "./examples/board-tools",
+      "description": "Example: Move missions, pause schedules and write a memory from one screen, each with your yes.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Decima Labs"
+      },
+      "category": "example",
+      "keywords": [
+        "houston-addon",
+        "example"
+      ]
+    },
+    {
+      "name": "agent-starter",
+      "source": "./examples/agent-starter",
+      "description": "Example: Start a Claude Code or Codex agent on a task in a folder you name, with your yes.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Decima Labs"
+      },
+      "category": "example",
+      "keywords": [
+        "houston-addon",
+        "example"
+      ]
+    },
+    {
+      "name": "github-status",
+      "source": "./examples/github-status",
+      "description": "Example: Checks githubstatus.com and tells you when GitHub isn't all green.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Decima Labs"
+      },
+      "category": "example",
+      "keywords": [
+        "houston-addon",
+        "example"
+      ]
+    }
+  ]
+}

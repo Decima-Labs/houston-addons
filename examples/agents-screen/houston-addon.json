@@ -1,0 +1,33 @@
+{
+  "houston-addon": 1,
+  "id": "io.decimalabs.example.agents-screen",
+  "name": "Agents at a Glance",
+  "version": "1.0.0",
+  "description": "A ⌘K screen listing every agent Houston sees, with each one's details.",
+  "author": {
+    "name": "Decima Labs",
+    "key": "5FEIYVuHYmANg9uYx5Xws/GvxTXniso+TL4VHCN9MDg="
+  },
+  "permissions": {
+    "agents": [
+      "all"
+    ]
+  },
+  "contributes": {
+    "screens": [
+      {
+        "id": "agents",
+        "title": "Agents at a Glance",
+        "page": "pages/agents.html",
+        "symbol": "person.3"
+      }
+    ],
+    "commands": [
+      {
+        "id": "open-agents",
+        "title": "Open Agents at a Glance",
+        "opens": "agents"
+      }
+    ]
+  }
+}

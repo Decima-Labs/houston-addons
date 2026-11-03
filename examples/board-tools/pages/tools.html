@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Board Tools</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 13px -apple-system, system-ui, sans-serif; margin: 12px; color: #222; background: transparent; }
+  @media (prefers-color-scheme: dark) { body { color: #ddd; } }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  h2 { font-size: 13px; margin: 14px 0 6px; }
+  button, select, input, textarea { font: inherit; }
+  code, pre { font: 12px ui-monospace, monospace; }
+  pre { white-space: pre-wrap; word-break: break-word; }
+  ul { padding-left: 18px; margin: 4px 0; }
+  .muted { opacity: 0.65; }
+  .error { color: #d33; }
+  .row { display: flex; gap: 6px; align-items: center; margin: 4px 0; }
+</style>
+</head>
+<body>
+<h1>Board tools</h1>
+<h2>Missions</h2>
+<ul id="missions"></ul>
+<h2>Schedules</h2>
+<ul id="schedules"></ul>
+<h2>Remember</h2>
+<div class="row">
+  <select id="category">
+    <option>decision</option><option>gotcha</option><option>incident</option><option>session</option>
+  </select>
+  <input id="memory" placeholder="What to remember" style="flex: 1">
+  <button id="remember">Remember</button>
+</div>
+<p id="status" class="muted"></p>
+<script>
+  // Every houston.call returns a promise. It rejects with Houston's own words when the gate
+  // refuses, the person says no, or the call fails; show them rather than swallowing them.
+  const $ = (id) => document.getElementById(id);
+  function say(text, isError) {
+    const el = $("status");
+    el.textContent = text;
+    el.className = isError ? "error" : "muted";
+  }
+  async function call(name, args) {
+    try {
+      return await houston.call(name, args);
+    } catch (e) {
+      say(String((e && e.message) || e), true);
+      throw e;
+    }
+  }
+
+const STATUSES = ["backlog", "next", "in-flight", "done", "closed"];
+
+  // houston.change always asks you first. It resolves to true after a yes, and rejects with
+  // "You said no." after a no.
+  async function change(args, done) {
+    say("Waiting for your yes…");
+    await call("houston.change", args);
+    say("Done.");
+    if (done) done();
+  }
+
+  async function load() {
+    // A scope it may change, it may also read: missions.write lets it read missions.
+    const missions = await call("houston.read", { scope: "missions" });
+    $("missions").replaceChildren(...missions.map((m) => {
+      const item = document.createElement("li");
+      const pick = document.createElement("select");
+      for (const s of STATUSES) pick.add(new Option(s, s, false, s === m.status));
+      pick.onchange = () => change({ scope: "missions", id: m.id, status: pick.value }, load).catch(load);
+      item.append(`${m.title} (${m.priority}) `, pick);
+      return item;
+    }));
+
+    const schedules = await call("houston.read", { scope: "schedules" });
+    $("schedules").replaceChildren(...schedules.map((s) => {
+      const item = document.createElement("li");
+      const button = document.createElement("button");
+      button.textContent = s.paused ? "Resume" : "Pause";
+      // Arguments are strings or numbers: paused is "true" or "false".
+      button.onclick = () => change({ scope: "schedules", id: s.id, paused: s.paused ? "false" : "true" }, load).catch(() => {});
+      item.append(`${s.name} `, button);
+      return item;
+    }));
+    say("");
+  }
+
+  $("remember").onclick = () => {
+    const text = $("memory").value.trim();
+    if (!text) return;
+    change({ scope: "knowledge", text, category: $("category").value }, () => ($("memory").value = "")).catch(() => {});
+  };
+
+  load();
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agents at a Glance</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 13px -apple-system, system-ui, sans-serif; margin: 12px; color: #222; background: transparent; }
+  @media (prefers-color-scheme: dark) { body { color: #ddd; } }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  h2 { font-size: 13px; margin: 14px 0 6px; }
+  button, select, input, textarea { font: inherit; }
+  code, pre { font: 12px ui-monospace, monospace; }
+  pre { white-space: pre-wrap; word-break: break-word; }
+  ul { padding-left: 18px; margin: 4px 0; }
+  .muted { opacity: 0.65; }
+  .error { color: #d33; }
+  .row { display: flex; gap: 6px; align-items: center; margin: 4px 0; }
+</style>
+</head>
+<body>
+<h1>Agents at a glance</h1>
+<div class="row">
+  <button id="refresh">Refresh</button>
+  <label><input type="checkbox" id="running"> Only running</label>
+</div>
+<ul id="list"></ul>
+<h2>Details</h2>
+<pre id="details" class="muted">Click an agent.</pre>
+<p id="status" class="muted"></p>
+<script>
+  // Every houston.call returns a promise. It rejects with Houston's own words when the gate
+  // refuses, the person says no, or the call fails; show them rather than swallowing them.
+  const $ = (id) => document.getElementById(id);
+  function say(text, isError) {
+    const el = $("status");
+    el.textContent = text;
+    el.className = isError ? "error" : "muted";
+  }
+  async function call(name, args) {
+    try {
+      return await houston.call(name, args);
+    } catch (e) {
+      say(String((e && e.message) || e), true);
+      throw e;
+    }
+  }
+
+const RUNNING = ["starting", "working", "waiting", "idle", "open"];
+
+  async function load() {
+    say("Loading…");
+    const agents = await call("agents.list");
+    const onlyRunning = $("running").checked;
+    const shown = agents.filter((a) => !onlyRunning || RUNNING.includes(a.state));
+    const list = $("list");
+    list.replaceChildren();
+    for (const agent of shown) {
+      const item = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = "#";
+      link.textContent = `${agent.name} (${agent.provider}, ${agent.state})`;
+      link.onclick = async (event) => {
+        event.preventDefault();
+        const read = await call("agent.read", { provider: agent.provider, id: agent.id });
+        $("details").textContent = JSON.stringify(read, null, 2);
+      };
+      item.append(link);
+      list.append(item);
+    }
+    say(`${shown.length} of ${agents.length} agents.`);
+  }
+
+  // Remember the checkbox with the add-on's own storage, which needs no permission.
+  $("running").onchange = async () => {
+    await call("storage.set", { key: "onlyRunning", value: $("running").checked ? "yes" : "no" });
+    load();
+  };
+  $("refresh").onclick = load;
+
+  (async () => {
+    $("running").checked = (await call("storage.get", { key: "onlyRunning" })) === "yes";
+    load();
+  })();
+</script>
+</body>
+</html>

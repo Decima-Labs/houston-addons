@@ -1,0 +1,11 @@
+{
+  "name": "event-log",
+  "version": "1.0.0",
+  "description": "A sidebar section that lists what happens in Houston as it happens.",
+  "author": {
+    "name": "Decima Labs"
+  },
+  "keywords": [
+    "houston-addon"
+  ]
+}

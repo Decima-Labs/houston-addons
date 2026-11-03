@@ -1,0 +1,20 @@
+{
+  "houston-addon": 1,
+  "id": "io.decimalabs.example.theme-dusk",
+  "name": "Dusk Theme",
+  "version": "1.0.0",
+  "description": "A dark theme with warm accents, as a Houston add-on.",
+  "author": {
+    "name": "Decima Labs",
+    "key": "5FEIYVuHYmANg9uYx5Xws/GvxTXniso+TL4VHCN9MDg="
+  },
+  "contributes": {
+    "themes": [
+      {
+        "id": "dusk",
+        "title": "Dusk",
+        "file": "themes/dusk.json"
+      }
+    ]
+  }
+}

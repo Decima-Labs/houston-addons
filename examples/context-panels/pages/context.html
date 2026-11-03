@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Context</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 13px -apple-system, system-ui, sans-serif; margin: 12px; color: #222; background: transparent; }
+  @media (prefers-color-scheme: dark) { body { color: #ddd; } }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  h2 { font-size: 13px; margin: 14px 0 6px; }
+  button, select, input, textarea { font: inherit; }
+  code, pre { font: 12px ui-monospace, monospace; }
+  pre { white-space: pre-wrap; word-break: break-word; }
+  ul { padding-left: 18px; margin: 4px 0; }
+  .muted { opacity: 0.65; }
+  .error { color: #d33; }
+  .row { display: flex; gap: 6px; align-items: center; margin: 4px 0; }
+</style>
+</head>
+<body>
+<h1>Where this panel opened</h1>
+<pre id="context"></pre>
+<h2 id="aboutTitle"></h2>
+<pre id="about" class="muted"></pre>
+<p id="status" class="muted"></p>
+<script>
+  // Every houston.call returns a promise. It rejects with Houston's own words when the gate
+  // refuses, the person says no, or the call fails; show them rather than swallowing them.
+  const $ = (id) => document.getElementById(id);
+  function say(text, isError) {
+    const el = $("status");
+    el.textContent = text;
+    el.className = isError ? "error" : "muted";
+  }
+  async function call(name, args) {
+    try {
+      return await houston.call(name, args);
+    } catch (e) {
+      say(String((e && e.message) || e), true);
+      throw e;
+    }
+  }
+
+// houston.context says what the panel opened beside: { agent }, { mission } or { terminal },
+  // with the agent too for a terminal tab running one. It's frozen; each value is an id.
+  const context = houston.context;
+  $("context").textContent = JSON.stringify(context, null, 2);
+
+  (async () => {
+    if (context.agent) {
+      // The context has the agent's id; agent.read also needs its provider, which agents.list gives.
+      const agents = await call("agents.list");
+      const agent = agents.find((a) => a.id === context.agent);
+      $("aboutTitle").textContent = "Agent";
+      $("about").textContent = agent
+        ? JSON.stringify(await call("agent.read", { provider: agent.provider, id: agent.id }), null, 2)
+        : "Not an agent this add-on may see.";
+    } else if (context.mission) {
+      const missions = await call("houston.read", { scope: "missions" });
+      $("aboutTitle").textContent = "Mission";
+      $("about").textContent = JSON.stringify(missions.find((m) => m.id === context.mission) || "Not found.", null, 2);
+    }
+  })();
+</script>
+</body>
+</html>

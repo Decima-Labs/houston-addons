@@ -1,0 +1,47 @@
+{
+  "houston-addon": 1,
+  "id": "io.decimalabs.example.context-panels",
+  "name": "Context Panels",
+  "version": "1.0.0",
+  "description": "Panels beside an agent, a mission, a chat and a terminal tab, showing where each opened.",
+  "author": {
+    "name": "Decima Labs",
+    "key": "5FEIYVuHYmANg9uYx5Xws/GvxTXniso+TL4VHCN9MDg="
+  },
+  "permissions": {
+    "agents": [
+      "all"
+    ],
+    "houston": [
+      "missions.read"
+    ]
+  },
+  "contributes": {
+    "panels": [
+      {
+        "id": "agent-info",
+        "title": "Agent Details",
+        "page": "pages/context.html",
+        "place": "agent"
+      },
+      {
+        "id": "mission-info",
+        "title": "Mission Details",
+        "page": "pages/context.html",
+        "place": "mission"
+      },
+      {
+        "id": "chat-info",
+        "title": "Chat Details",
+        "page": "pages/context.html",
+        "place": "chat"
+      },
+      {
+        "id": "terminal-info",
+        "title": "Terminal Details",
+        "page": "pages/context.html",
+        "place": "terminal"
+      }
+    ]
+  }
+}

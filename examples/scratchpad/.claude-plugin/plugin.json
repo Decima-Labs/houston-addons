@@ -1,0 +1,11 @@
+{
+  "name": "scratchpad",
+  "version": "1.0.0",
+  "description": "A sidebar scratchpad with keyboard shortcuts: one opens it, one stamps the time into it.",
+  "author": {
+    "name": "Decima Labs"
+  },
+  "keywords": [
+    "houston-addon"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "theme-dusk",
+  "version": "1.0.0",
+  "description": "A dark theme with warm accents, as a Houston add-on.",
+  "author": {
+    "name": "Decima Labs"
+  },
+  "keywords": [
+    "houston-addon"
+  ]
+}

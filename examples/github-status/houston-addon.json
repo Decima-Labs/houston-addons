@@ -1,0 +1,36 @@
+{
+  "houston-addon": 1,
+  "id": "io.decimalabs.example.github-status",
+  "name": "GitHub Status",
+  "version": "1.0.0",
+  "description": "Checks githubstatus.com and tells you when GitHub isn't all green.",
+  "author": {
+    "name": "Decima Labs",
+    "key": "5FEIYVuHYmANg9uYx5Xws/GvxTXniso+TL4VHCN9MDg="
+  },
+  "permissions": {
+    "network": [
+      "www.githubstatus.com"
+    ],
+    "houston": [
+      "notify"
+    ]
+  },
+  "contributes": {
+    "screens": [
+      {
+        "id": "github-status",
+        "title": "GitHub Status",
+        "page": "pages/status.html",
+        "symbol": "antenna.radiowaves.left.and.right"
+      }
+    ],
+    "commands": [
+      {
+        "id": "check-github",
+        "title": "Check GitHub Status",
+        "opens": "github-status"
+      }
+    ]
+  }
+}

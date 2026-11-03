@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Event Log</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 13px -apple-system, system-ui, sans-serif; margin: 12px; color: #222; background: transparent; }
+  @media (prefers-color-scheme: dark) { body { color: #ddd; } }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  h2 { font-size: 13px; margin: 14px 0 6px; }
+  button, select, input, textarea { font: inherit; }
+  code, pre { font: 12px ui-monospace, monospace; }
+  pre { white-space: pre-wrap; word-break: break-word; }
+  ul { padding-left: 18px; margin: 4px 0; }
+  .muted { opacity: 0.65; }
+  .error { color: #d33; }
+  .row { display: flex; gap: 6px; align-items: center; margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="row"><strong>Event log</strong> <button id="clear">Clear</button></div>
+<ul id="log"></ul>
+<p id="status" class="muted"></p>
+<script>
+  // Every houston.call returns a promise. It rejects with Houston's own words when the gate
+  // refuses, the person says no, or the call fails; show them rather than swallowing them.
+  const $ = (id) => document.getElementById(id);
+  function say(text, isError) {
+    const el = $("status");
+    el.textContent = text;
+    el.className = isError ? "error" : "muted";
+  }
+  async function call(name, args) {
+    try {
+      return await houston.call(name, args);
+    } catch (e) {
+      say(String((e && e.message) || e), true);
+      throw e;
+    }
+  }
+
+const MAX = 50;
+
+  function describe(kind, data) {
+    switch (kind) {
+      case "agent.started": return `${data.name} started (${data.state})`;
+      case "agent.stopped": return `${data.name} stopped (${data.state})`;
+      case "agent.asks": return `${data.name} asks: ${data.question || "something"}`;
+      case "agent.message": return `${data.name} finished a turn`;
+      case "mission.moved": return `“${data.title}” moved from ${data.from} to ${data.to}`;
+      case "schedule.ran": return `Schedule ${data.name} ran`;
+      default: return kind;
+    }
+  }
+
+  function add(kind, data) {
+    const item = document.createElement("li");
+    item.textContent = `${new Date().toLocaleTimeString()} ${describe(kind, data)}`;
+    $("log").prepend(item);
+    while ($("log").children.length > MAX) $("log").lastChild.remove();
+  }
+
+  // Only events listed in the manifest's contributes.events reach a page, only while it's open,
+  // and only those it may read: agent events need the agent's provider in permissions.agents.
+  for (const kind of ["agent.started", "agent.stopped", "agent.asks", "agent.message", "mission.moved", "schedule.ran"]) {
+    houston.on(kind, (data) => add(kind, data));
+  }
+  $("clear").onclick = () => $("log").replaceChildren();
+  say("Listening.");
+</script>
+</body>
+</html>

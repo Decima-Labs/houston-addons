@@ -1,0 +1,29 @@
+{
+  "houston-addon": 1,
+  "id": "io.decimalabs.hello",
+  "name": "Hello",
+  "version": "1.0.0",
+  "description": "A starting point for a Houston add-on: a sidebar section, a command and a skill.",
+  "author": {
+    "name": "Decima Labs",
+    "key": "dc5CdgNcy4ajvn0z1tweb5HUYnnXmcHhx1+ySNaKVbo="
+  },
+  "permissions": {},
+  "contributes": {
+    "sidebarSections": [
+      {
+        "id": "hello",
+        "title": "Hello",
+        "page": "pages/hello.html",
+        "symbol": "hand.wave"
+      }
+    ],
+    "commands": [
+      {
+        "id": "say-hello",
+        "title": "Say Hello",
+        "opens": "hello"
+      }
+    ]
+  }
+}

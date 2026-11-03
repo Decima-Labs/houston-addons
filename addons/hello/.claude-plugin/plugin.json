@@ -1,0 +1,7 @@
+{
+  "name": "hello",
+  "version": "1.0.0",
+  "description": "A starting point for a Houston add-on: a sidebar section, a command and a skill.",
+  "author": { "name": "Decima Labs" },
+  "keywords": ["houston-addon"]
+}

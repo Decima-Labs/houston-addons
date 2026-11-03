@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Scratchpad</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 13px -apple-system, system-ui, sans-serif; margin: 12px; color: #222; background: transparent; }
+  @media (prefers-color-scheme: dark) { body { color: #ddd; } }
+  h1 { font-size: 15px; margin: 0 0 8px; }
+  h2 { font-size: 13px; margin: 14px 0 6px; }
+  button, select, input, textarea { font: inherit; }
+  code, pre { font: 12px ui-monospace, monospace; }
+  pre { white-space: pre-wrap; word-break: break-word; }
+  ul { padding-left: 18px; margin: 4px 0; }
+  .muted { opacity: 0.65; }
+  .error { color: #d33; }
+  .row { display: flex; gap: 6px; align-items: center; margin: 4px 0; }
+</style>
+</head>
+<body>
+<textarea id="text" rows="7" style="width: 100%; box-sizing: border-box;" placeholder="Notes, kept by Houston for this add-on."></textarea>
+<p id="status" class="muted"></p>
+<script>
+  // Every houston.call returns a promise. It rejects with Houston's own words when the gate
+  // refuses, the person says no, or the call fails; show them rather than swallowing them.
+  const $ = (id) => document.getElementById(id);
+  function say(text, isError) {
+    const el = $("status");
+    el.textContent = text;
+    el.className = isError ? "error" : "muted";
+  }
+  async function call(name, args) {
+    try {
+      return await houston.call(name, args);
+    } catch (e) {
+      say(String((e && e.message) || e), true);
+      throw e;
+    }
+  }
+
+let saving;
+
+  // storage.set keeps a string per key for this add-on only, in a file only you can read.
+  function save() {
+    clearTimeout(saving);
+    saving = setTimeout(async () => {
+      await call("storage.set", { key: "text", value: $("text").value });
+      say("Saved.");
+    }, 400);
+  }
+  $("text").oninput = save;
+
+  // A command with no "opens" tells this add-on's open pages it ran: here, ⌥⇧⌘T.
+  houston.on("command.ran", (data) => {
+    if (data.id !== "stamp-time") return;
+    const box = $("text");
+    box.value += (box.value && !box.value.endsWith("\n") ? "\n" : "") + new Date().toLocaleString() + " ";
+    box.focus();
+    save();
+  });
+
+  (async () => {
+    $("text").value = (await call("storage.get", { key: "text" })) || "";
+  })();
+</script>
+</body>
+</html>

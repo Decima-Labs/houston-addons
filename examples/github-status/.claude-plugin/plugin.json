@@ -1,0 +1,11 @@
+{
+  "name": "github-status",
+  "version": "1.0.0",
+  "description": "Checks githubstatus.com and tells you when GitHub isn't all green.",
+  "author": {
+    "name": "Decima Labs"
+  },
+  "keywords": [
+    "houston-addon"
+  ]
+}

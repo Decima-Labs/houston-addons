@@ -1,0 +1,13 @@
+# Signing keys never belong here.
+*.key
+.houston-addon-key
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+# Agent scratch
+.claude/
+.scratch/
+*-plan.md

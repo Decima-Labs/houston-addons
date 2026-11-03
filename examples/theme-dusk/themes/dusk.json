@@ -1,0 +1,23 @@
+{
+  "houstonTheme": 1,
+  "name": "Dusk",
+  "base": "midnight",
+  "accent": "#FF9E64",
+  "background": "#1A1B26",
+  "surface": "#202233",
+  "text": "#E6E6F0",
+  "attention": "#E0AF68",
+  "green": "#9ECE6A",
+  "red": "#F7768E",
+  "cyan": "#7DCFFF",
+  "pink": "#BB9AF7",
+  "yellow": "#E0AF68",
+  "syntax": {
+    "keyword": "#BB9AF7",
+    "string": "#9ECE6A",
+    "comment": "#8C93BA",
+    "number": "#FF9E64",
+    "type": "#7DCFFF",
+    "function": "#7AA2F7"
+  }
+}

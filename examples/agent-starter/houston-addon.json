@@ -1,0 +1,34 @@
+{
+  "houston-addon": 1,
+  "id": "io.decimalabs.example.agent-starter",
+  "name": "Agent Starter",
+  "version": "1.0.0",
+  "description": "Start a Claude Code or Codex agent on a task in a folder you name, with your yes.",
+  "author": {
+    "name": "Decima Labs",
+    "key": "5FEIYVuHYmANg9uYx5Xws/GvxTXniso+TL4VHCN9MDg="
+  },
+  "permissions": {
+    "agents": [
+      "claude",
+      "codex"
+    ]
+  },
+  "contributes": {
+    "screens": [
+      {
+        "id": "agent-starter",
+        "title": "Agent Starter",
+        "page": "pages/start.html",
+        "symbol": "play.circle"
+      }
+    ],
+    "commands": [
+      {
+        "id": "open-agent-starter",
+        "title": "Open Agent Starter",
+        "opens": "agent-starter"
+      }
+    ]
+  }
+}

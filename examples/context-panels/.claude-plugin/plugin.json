@@ -1,0 +1,11 @@
+{
+  "name": "context-panels",
+  "version": "1.0.0",
+  "description": "Panels beside an agent, a mission, a chat and a terminal tab, showing where each opened.",
+  "author": {
+    "name": "Decima Labs"
+  },
+  "keywords": [
+    "houston-addon"
+  ]
+}
